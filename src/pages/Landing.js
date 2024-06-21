@@ -1,12 +1,22 @@
+import { useState } from 'react'
+
 import Signup from '../components/landing/Signup'
-import { useSignupMutation } from '../api/userApi'
+import Login from '../components/landing/Login'
+import { useSignupMutation, useLoginMutation } from '../api/userApi'
 
 const Landing = () => {
+  const [showLogin, setShowLogin] = useState(false)
 
-  const [signup, { error }] = useSignupMutation()
+  const [signup, { error: signupError }] = useSignupMutation()
+  const [login, { error: loginError }] = useLoginMutation()
 
   return (
-    <Signup signup={signup} error={error} />
+    <>
+      {showLogin
+        ? <Login login={login} error={loginError} setShowLogin={setShowLogin} />
+        : <Signup signup={signup} error={signupError} setShowLogin={setShowLogin} />
+      }
+    </>
   )
 }
 

@@ -21,3 +21,18 @@ export const signupSchema = yup
       .string()
       .required('Password is a required field')
   })
+
+
+export const loginSchema = yup
+  .object({
+    email: yup
+      .string()
+      .required('Email is a required field')
+      .matches(
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        'Please provide valid email id'
+      ),
+    password: yup
+      .string()
+      .required('Password is a required field')
+  })  

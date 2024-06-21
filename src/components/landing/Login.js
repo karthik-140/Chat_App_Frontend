@@ -4,15 +4,19 @@ import { Button, Typography, Link } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { CustomPaper, CustomTextField, CustomHeading } from '../../customComponents'
-import { signupSchema } from '../../schemas/userSchema'
+import { loginSchema } from '../../schemas/userSchema'
 
-const Signup = ({ signup, error, setShowLogin }) => {
+const Login = ({ login, error, setShowLogin }) => {
 
-  const { control, handleSubmit, reset } = useForm({ resolver: yupResolver(signupSchema) })
+  const { control, handleSubmit, reset } = useForm({ resolver: yupResolver(loginSchema) })
 
   const onSubmit = async (data) => {
     try {
-      await signup(data)
+      const response = await login(data)
+      const token = response?.data?.token
+      if (!!token) {
+        localStorage.setItem('token', token)
+      }
       reset()
     } catch (err) {
       console.log(err)
@@ -21,26 +25,12 @@ const Signup = ({ signup, error, setShowLogin }) => {
 
   return (
     <CustomPaper className='flex flex-col gap-2' >
-      <CustomHeading sx={{ fontWeight: 700 }} className='font-extrabold' variant='h5' align='center'>Signup</CustomHeading>
+      <CustomHeading sx={{ fontWeight: 700 }} className='font-extrabold' variant='h5' align='center'>Login</CustomHeading>
       {error && <Typography className='text-red-500 self-center' variant='h6' >{error?.data?.message}</Typography>}
-      <CustomTextField
-        name={'name'}
-        label={'Name'}
-        type={'text'}
-        control={control}
-        isRequired
-      />
       <CustomTextField
         name={'email'}
         label={'Email'}
         type={'email'}
-        control={control}
-        isRequired
-      />
-      <CustomTextField
-        name={'phone'}
-        label={'Phone'}
-        type={'phone'}
         control={control}
         isRequired
       />
@@ -60,11 +50,20 @@ const Signup = ({ signup, error, setShowLogin }) => {
       >
         submit
       </Button>
-      <div className='text-green-600 self-center mt-2'>
-        <Typography className='flex gap-0.5'>Existing user? <Link component={'button'} onClick={() => setShowLogin(true)}>Login</Link></Typography>
+      <div className='flex flex-col items-center text-green-600 self-center mt-2'>
+        <Typography className='flex gap-0.5'>
+          Forgot password?
+          <Link
+            component={'button'}
+          // onClick={() => setForgotPassword(true)}
+          >
+            Click here
+          </Link>
+        </Typography>
+        <Typography className='flex gap-0.5'>New user? <Link component={'button'} onClick={() => setShowLogin(false)}>Signup</Link></Typography>
       </div>
     </CustomPaper>
   )
 }
 
-export default Signup
+export default Login
