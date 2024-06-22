@@ -1,14 +1,15 @@
 import MessageBar from '../components/chat/MessageBar'
 import Messages from '../components/chat/Messages'
-import { useSendMessageMutation } from '../api/messageApi'
+import { useSendMessageMutation, useGetMessagesQuery } from '../api/messageApi'
 
 const Chat = () => {
 
   const [sendMessage] = useSendMessageMutation()
+  const { data: messages = [] } = useGetMessagesQuery()
 
   return (
     <>
-      <Messages />
+      <Messages messages={messages} />
       <MessageBar sendMessage={sendMessage} />
     </>
   )

@@ -7,11 +7,19 @@ const messageApi = rootApi.injectEndpoints({
         url: 'messages/sendMessage',
         method: 'POST',
         body: data
-      })
+      }),
+      invalidatesTags: ['message']
+    }),
+    getMessages: builder.query({
+      query: () => ({
+        url: 'messages/getMessages',
+      }),
+      providesTags: ['message']
     }),
   })
 })
 
 export const {
   useSendMessageMutation,
+  useGetMessagesQuery,
 } = messageApi
