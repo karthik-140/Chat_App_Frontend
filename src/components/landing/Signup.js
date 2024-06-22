@@ -12,8 +12,13 @@ const Signup = ({ signup, error, setShowLogin }) => {
 
   const onSubmit = async (data) => {
     try {
-      await signup(data)
-      reset()
+      const response = await signup(data)
+      const user = response?.data?.user
+      if (user) {
+        console.log(user)
+        setShowLogin(true)
+        reset()
+      }
     } catch (err) {
       console.log(err)
     }

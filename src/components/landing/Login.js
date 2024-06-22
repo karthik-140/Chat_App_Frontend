@@ -2,11 +2,13 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button, Typography, Link } from '@mui/material'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigate } from 'react-router-dom'
 
 import { CustomPaper, CustomTextField, CustomHeading } from '../../customComponents'
 import { loginSchema } from '../../schemas/userSchema'
 
 const Login = ({ login, error, setShowLogin }) => {
+  const navigate = useNavigate()
 
   const { control, handleSubmit, reset } = useForm({ resolver: yupResolver(loginSchema) })
 
@@ -16,6 +18,7 @@ const Login = ({ login, error, setShowLogin }) => {
       const token = response?.data?.token
       if (!!token) {
         localStorage.setItem('token', token)
+        navigate('/chats')
       }
       reset()
     } catch (err) {
