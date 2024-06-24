@@ -10,13 +10,16 @@ const MessageBar = ({ sendMessage }) => {
   const message = watch('message')
 
   const onSubmit = async (data) => {
-    const response = await sendMessage(data)
-    console.log(data, response)
-    reset()
+    try {
+      await sendMessage(data)
+      reset()
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
-    <div className='flex gap-1 absolute bottom-0 w-full'>
+    <div className='flex gap-1 sticky bottom-0 w-full'>
       <div className='flex-1'>
         <CustomTextField
           name='message'

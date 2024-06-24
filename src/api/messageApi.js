@@ -11,8 +11,8 @@ const messageApi = rootApi.injectEndpoints({
       invalidatesTags: ['message']
     }),
     getMessages: builder.query({
-      query: () => ({
-        url: 'messages/getMessages',
+      query: ({ messageId }) => ({
+        url: `messages/getMessages?messageId=${messageId}`,
       }),
       providesTags: ['message']
     }),
@@ -21,5 +21,5 @@ const messageApi = rootApi.injectEndpoints({
 
 export const {
   useSendMessageMutation,
-  useGetMessagesQuery,
+  useLazyGetMessagesQuery,
 } = messageApi
