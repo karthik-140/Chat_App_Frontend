@@ -4,14 +4,14 @@ import SendIcon from '@mui/icons-material/Send';
 
 import { CustomTextField } from '../../customComponents'
 
-const MessageBar = ({ sendMessage }) => {
+const MessageBar = ({ sendMessage, groupId }) => {
 
   const { control, handleSubmit, reset, watch } = useForm()
   const message = watch('message')
 
   const onSubmit = async (data) => {
     try {
-      await sendMessage(data)
+      await sendMessage({ message: data.message, groupId })
       reset()
     } catch (err) {
       console.log(err)

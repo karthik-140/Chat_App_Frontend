@@ -11,8 +11,8 @@ const messageApi = rootApi.injectEndpoints({
       invalidatesTags: ['message']
     }),
     getMessages: builder.query({
-      query: ({ messageId }) => ({
-        url: `messages/getMessages?messageId=${messageId}`,
+      query: ({ groupId, messageId }) => ({
+        url: `messages/getMessages?groupId=${groupId}&messageId=${messageId}`,
       }),
       providesTags: ['message']
     }),

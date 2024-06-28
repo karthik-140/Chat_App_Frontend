@@ -1,11 +1,10 @@
-import { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Box, List, ListItem } from '@mui/material'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { jwtDecode } from 'jwt-decode'
 
 const Messages = ({ messages }) => {
-  const messagesEndRef = useRef(null)
-  const listContainerRef = useRef(null)
+  const messagesEndRef = useRef(messages?.length)
 
   const getToken = () => localStorage.getItem('token')
   const decodeToken = jwtDecode(getToken())
@@ -14,32 +13,23 @@ const Messages = ({ messages }) => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [messages])
-
-  // const handleScroll = (e) => {
-  //   if (e.currentTarget.scrollTop === 0) {
-  //     alert("on top")
-  //   }
-  // }
+  }, [messages?.length])
 
   return (
     <>
-      <div
-        className='flex justify-center pt-10 pb-8 h-full'
-        ref={listContainerRef}
-      // onScroll={handleScroll}
-      // style={{ overflowY: 'scroll', maxHeight: '80vh' }}
-      >
-        <List className='w-5/6 sm:w-3/4 md:w-1/2 flex flex-col gap-6'>
+      <div className='pt-4 pb-4 flex relative z-0'>
+        <List className='w-full flex flex-col gap-6 mx-4'>
           {messages.map((row, idx) => (
-            <Box key={`${row.userName}-${idx}`} className={`flex gap-2 items-center`} >
-              <div className='relative'>
+            <Box
+              key={`${row.userName}-${idx}`}
+              className={`flex gap-2 items-center ${decodeToken.userId === row.userId ? 'self-end flex-row-reverse' : 'self-start'}`} >
+              <div className='flex flex-col'>
+                <span className='font-medium capitalize'>{`${decodeToken.userId === row.userId ? 'You' : row.userName}`}</span>
                 <AccountCircleIcon fontSize='large' className='text-blue-400' />
-                <span className='absolute left-0 -top-6 font-medium capitalize'>{`${decodeToken.userId === row.userId ? 'You' : row.userName}`}</span>
               </div>
               <ListItem
                 key={idx}
-                className={`md:text-xl rounded rounded-tl-2xl ${decodeToken.userId === row.userId ? 'bg-white' : 'bg-gray-300'}`}
+                className={`md:text-xl self-end rounded  ${decodeToken.userId === row.userId ? 'bg-white rounded-tr-2xl' : 'bg-gray-300 rounded-tl-2xl'}`}
               >
                 {row.message}
               </ListItem>
@@ -52,4 +42,4 @@ const Messages = ({ messages }) => {
   )
 }
 
-export default Messages
+export default React.memo(Messages)

@@ -15,11 +15,17 @@ const userApi = rootApi.injectEndpoints({
         method: 'POST',
         body: data
       })
-    })
+    }),
+    getAllGroupUsers: builder.query({
+      query: () => ({
+        url: 'user/getAllGroupUsers',
+      })
+    }),
   })
 })
 
 export const {
   useSignupMutation,
   useLoginMutation,
+  useGetAllGroupUsersQuery,
 } = userApi
