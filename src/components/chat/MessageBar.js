@@ -1,17 +1,29 @@
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import { Button } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
+import io from 'socket.io-client'
+import { jwtDecode } from 'jwt-decode'
 
 import { CustomTextField } from '../../customComponents'
 
-const MessageBar = ({ sendMessage, groupId }) => {
+export const socket = io.connect('http://localhost:3001')
+
+const MessageBar = ({ sendMessage, groupId, setMessages }) => {
 
   const { control, handleSubmit, reset, watch } = useForm()
   const message = watch('message')
 
+  const getToken = () => localStorage.getItem('token')
+  const decodeToken = jwtDecode(getToken())
+
   const onSubmit = async (data) => {
     try {
-      await sendMessage({ message: data.message, groupId })
+      const message = data.message
+      const userGroupInfo = { userId: decodeToken.userId, userName: decodeToken.name, groupId }
+      await sendMessage({ message, groupId })
+      socket.emit('send-message', message, userGroupInfo)
+      setMessages((prev) => [...prev, { ...userGroupInfo, message }])
       reset()
     } catch (err) {
       console.log(err)
@@ -48,4 +60,4 @@ const MessageBar = ({ sendMessage, groupId }) => {
   )
 }
 
-export default MessageBar
+export default React.memo(MessageBar)

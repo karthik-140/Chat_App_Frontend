@@ -16,6 +16,9 @@ export const rootApi = createApi({
       return headers
     }
   }),
-  tagTypes: ['message', 'group'],
+  tagTypes: [
+    // 'message',
+    'group'
+  ],
   endpoints: () => ({}),
 })
