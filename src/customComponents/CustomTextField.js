@@ -23,7 +23,7 @@ const StyledTextField = styled(TextField)(({ theme, error }) => ({
 
 
 const CustomTextField = ({
-  name, label, className, sx, defaultValue, isRequired, varaint, type, placeholder, control, style
+  name, label, className, sx, defaultValue, isRequired, varaint, type, placeholder, control, style, InputProps
 }) => {
   return (
     <div className="flex flex-col">
@@ -49,6 +49,7 @@ const CustomTextField = ({
             placeholder={placeholder}
             error={!!error}
             helperText={error ? error.message : null}
+            InputProps={InputProps}
           />
         )}
       />

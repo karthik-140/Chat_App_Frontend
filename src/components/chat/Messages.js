@@ -15,6 +15,18 @@ const Messages = ({ messages }) => {
     }
   }, [messages?.length])
 
+  function checkMessageType(message) {
+    const urlPattern = /^https?:\/\/[^\s]+$/;
+
+    if (urlPattern.test(message)) {
+      return (
+        <img src={`${message}`} alt={`${message}`} />
+      )
+    } else {
+      return message
+    }
+  }
+
   return (
     <>
       <div className='pt-4 pb-4 flex relative z-0'>
@@ -29,9 +41,9 @@ const Messages = ({ messages }) => {
               </div>
               <ListItem
                 key={idx}
-                className={`md:text-xl self-end rounded  ${decodeToken.userId === row.userId ? 'bg-white rounded-tr-2xl' : 'bg-gray-300 rounded-tl-2xl'}`}
+                className={`md:text-xl max-w-xs overflow-hidden self-end rounded  ${decodeToken.userId === row.userId ? 'bg-white rounded-tr-2xl' : 'bg-gray-300 rounded-tl-2xl'}`}
               >
-                {row.message}
+                {checkMessageType(row.message)}
               </ListItem>
             </Box>
           ))}

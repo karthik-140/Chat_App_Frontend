@@ -6,7 +6,11 @@ const messageApi = rootApi.injectEndpoints({
       query: (data) => ({
         url: 'messages/sendMessage',
         method: 'POST',
-        body: data
+        body: data,
+        prepareHeaders: (headers) => {
+          headers.set("Content-Type", "multipart/form-data")
+          return headers
+        },
       }),
       // invalidatesTags: ['message']
     }),
