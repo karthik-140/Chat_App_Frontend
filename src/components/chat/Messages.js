@@ -16,11 +16,17 @@ const Messages = ({ messages }) => {
   }, [messages?.length])
 
   function checkMessageType(message) {
-    const urlPattern = /^https?:\/\/[^\s]+$/;
+    const urlPattern = /^(https?|blob):\/\/[^\s]+$/;
+    const blobUrlPattern = /^blob:http:\/\/[^\s]+$/;
+    const base64Pattern = /^data:image\/[a-zA-Z]+;base64,/;
 
-    if (urlPattern.test(message)) {
+    if (urlPattern.test(message) || blobUrlPattern.test(message)) {
       return (
         <img src={`${message}`} alt={`${message}`} />
+      )
+    } else if (base64Pattern.test(message)) {
+      return (
+        <img src={message} alt="Base64" />
       )
     } else {
       return message
@@ -41,7 +47,7 @@ const Messages = ({ messages }) => {
               </div>
               <ListItem
                 key={idx}
-                className={`md:text-xl max-w-xs overflow-hidden self-end rounded  ${decodeToken.userId === row.userId ? 'bg-white rounded-tr-2xl' : 'bg-gray-300 rounded-tl-2xl'}`}
+                className={`md:text-xl max-w-32 md:max-w-xs overflow-hidden self-end rounded  ${decodeToken.userId === row.userId ? 'bg-white rounded-tr-2xl' : 'bg-gray-300 rounded-tl-2xl'}`}
               >
                 {checkMessageType(row.message)}
               </ListItem>

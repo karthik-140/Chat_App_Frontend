@@ -7,10 +7,10 @@ const messageApi = rootApi.injectEndpoints({
         url: 'messages/sendMessage',
         method: 'POST',
         body: data,
-        prepareHeaders: (headers) => {
-          headers.set("Content-Type", "multipart/form-data")
-          return headers
-        },
+        // prepareHeaders: (headers) => {
+        //   headers.set("Content-Type", "multipart/form-data")
+        //   return headers
+        // },
       }),
       // invalidatesTags: ['message']
     }),
@@ -20,10 +20,18 @@ const messageApi = rootApi.injectEndpoints({
       }),
       // providesTags: ['message']
     }),
+    uploadImage: builder.mutation({
+      query: ({groupId, formData}) => ({
+        url: `messages/uploadFile?groupId=${groupId}`,
+        method: 'POST',
+        body: formData
+      })
+    })
   })
 })
 
 export const {
   useSendMessageMutation,
   useLazyGetMessagesQuery,
+  useUploadImageMutation,
 } = messageApi

@@ -13,7 +13,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import { useAddUsersMutation, useRemoveUserFromGroupMutation, useMakeUserIsAdminMutation, useGetGroupInfoQuery, useExistGroupMutation } from '../../api/groupApi';
 import { useGetAllGroupUsersQuery } from '../../api/userApi';
 
-const MessageTopBar = ({ selectedGroup }) => {
+const MessageTopBar = ({ selectedGroup, setSmallScreen }) => {
   const [openGroupInfo, setOpenGroupInfo] = useState(false)
   const [selected, setSelected] = useState('overview')
   const [selectedUsers, setSelectedUsers] = useState([])
@@ -243,6 +243,11 @@ const MessageTopBar = ({ selectedGroup }) => {
             {selectedGroup?.groupName}
           </span>
         </Box>
+        <Button onClick={(e) => {
+          e.stopPropagation()
+          setSmallScreen((prev) => !prev)
+        }}
+          className='md:hidden' size='small' variant='outlined' color='secondary'>close</Button>
       </Box>
       {openGroupInfo &&
         <Card ref={cardRef} className='absolute z-40 flex top-16 left-0 cursor-default w-96 max-h-96'>

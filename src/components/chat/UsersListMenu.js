@@ -47,7 +47,7 @@ const UsersListMenu = ({ setShowUserList }) => {
   }
 
   return (
-    <Card className='absolute z-50 w-1/5'>
+    <Card className='absolute z-50 right-6 md:left-56 w-1/3 md:w-1/6'>
       <div className='flex flex-col gap-2 px-2 mt-2'>
         <div className='flex items-center gap-2'>
           <KeyboardBackspaceIcon onClick={onBackClickHandler} className='text-gray-600 hover:bg-slate-200' />
