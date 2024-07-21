@@ -13,6 +13,7 @@ const ChatsListMenu = ({ allGroups, setSelectedGroup }) => {
       <div className='flex justify-between items-center px-4 py-4 border-b'>
         <Typography className='font-bold' variant='h6'>Chats</Typography>
         <div>
+          {allGroups.length === 0 && <p className='absolute z-50 top-0 text-orange-800 text-lg animate-bounce'>Create group to chat.</p>}
           <PeopleOutlineIcon className='cursor-pointer' onClick={() => setShowUserList(true)} />
           {showUserList && <UsersListMenu setShowUserList={setShowUserList} />}
         </div>
