@@ -4,7 +4,7 @@ const getToken = () => localStorage.getItem('token')
 
 export const rootApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3001/',
+    baseUrl: 'https://chat-app-backend-nu-five.vercel.app/',
     prepareHeaders: (headers, { endpoint }) => {
       const excludedEndpoints = ['signup', 'login']
       if (!excludedEndpoints.includes(endpoint)) {
