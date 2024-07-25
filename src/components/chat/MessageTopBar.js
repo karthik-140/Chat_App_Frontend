@@ -13,7 +13,7 @@ import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettin
 import { useAddUsersMutation, useRemoveUserFromGroupMutation, useMakeUserIsAdminMutation, useGetGroupInfoQuery, useExistGroupMutation } from '../../api/groupApi';
 import { useGetAllGroupUsersQuery } from '../../api/userApi';
 
-const MessageTopBar = ({ selectedGroup, setSmallScreen }) => {
+const MessageTopBar = ({ selectedGroup, setSelectedGroup, setSmallScreen }) => {
   const [openGroupInfo, setOpenGroupInfo] = useState(false)
   const [selected, setSelected] = useState('overview')
   const [selectedUsers, setSelectedUsers] = useState([])
@@ -227,6 +227,12 @@ const MessageTopBar = ({ selectedGroup, setSmallScreen }) => {
     }
   }
 
+  const closeChatHandler = (e) => {
+    e.stopPropagation()
+    setSelectedGroup(null)
+    setSmallScreen(false)
+  }
+
   return (
     <>
       <Box onClick={() => {
@@ -239,14 +245,11 @@ const MessageTopBar = ({ selectedGroup, setSmallScreen }) => {
           <Box className='rounded-full p-2 flex justify-center bg-slate-200  text-gray-500' >
             <GroupIcon fontSize='medium' />
           </Box>
-          <span className='cursor-default'>
+          <span className='cursor-default capitalize'>
             {selectedGroup?.groupName}
           </span>
         </Box>
-        <Button onClick={(e) => {
-          e.stopPropagation()
-          setSmallScreen((prev) => !prev)
-        }}
+        <Button onClick={closeChatHandler}
           className='md:hidden' size='small' variant='outlined' color='secondary'>close</Button>
       </Box>
       {openGroupInfo &&

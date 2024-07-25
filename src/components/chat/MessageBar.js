@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Box, Button, Card, InputAdornment } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send';
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import { jwtDecode } from 'jwt-decode'
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
@@ -10,8 +10,10 @@ import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { useUploadImageMutation } from '../../api/messageApi';
 import { Toast } from '../../customComponents';
 import { CustomTextField } from '../../customComponents'
+import { socket } from '../../services/Socket';
 
-export const socket = io.connect('https://chat-app-backend-nu-five.vercel.app/')
+// export const socket = io.connect('https://chat-app-backend-nu-five.vercel.app/')
+// export const socket = io.connect('http://localhost:3001')
 
 const MessageBar = ({ sendMessage, groupId, setMessages }) => {
   const [uploadedFile, setUploadedFile] = useState()

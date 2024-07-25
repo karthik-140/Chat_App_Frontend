@@ -6,12 +6,13 @@ import MessageTopBar from '../components/chat/MessageTopBar'
 import { useSendMessageMutation, useLazyGetMessagesQuery } from '../api/messageApi'
 import ChatsListMenu from '../components/chat/ChatsListMenu'
 import { useGetAllGroupsQuery } from '../api/groupApi'
-import { socket } from '../components/chat/MessageBar'
+// import { socket } from '../components/chat/MessageBar'
+import { socket } from '../services/Socket'
 
 const Chat = () => {
   const [messages, setMessages] = useState([])
-  const [selectedGroup, setSelectedGroup] = useState()
-  const [smallScreen, setSmallScreen] = useState(false)
+  const [selectedGroup, setSelectedGroup] = useState(null)
+  const [smallScreen, setSmallScreen] = useState(true)
 
   const { data: allGroups = [] } = useGetAllGroupsQuery()
   const [sendMessage] = useSendMessageMutation()
@@ -26,10 +27,10 @@ const Chat = () => {
   }, [innerWidth, selectedGroup])
 
   useEffect(() => {
-    if (!selectedGroup) {
+    if (!selectedGroup && innerWidth > 767) {
       setSelectedGroup(() => allGroups[0])
     }
-  }, [allGroups, selectedGroup])
+  }, [allGroups, innerWidth, selectedGroup])
 
   const getStoredMessages = useCallback(() => {
     const messages = JSON.parse(localStorage.getItem(selectedGroup?.id)) || []
@@ -99,7 +100,7 @@ const Chat = () => {
           // className={`${smallScreen ? 'hidden' : 'flex'} flex-1 md:flex flex-col h-full relative`}
           className={`${innerWidth > 767 ? 'flex-1 flex flex-col h-full relative' : smallScreen ? 'hidden' : 'flex'} flex-1 md:flex flex-col h-full relative`}
         >
-          <MessageTopBar setSmallScreen={setSmallScreen} selectedGroup={selectedGroup || allGroups[0]} />
+          <MessageTopBar setSmallScreen={setSmallScreen} selectedGroup={selectedGroup || allGroups[0]} setSelectedGroup={setSelectedGroup} />
           <div className='mt-16 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-slate-100'>
             <Messages messages={messages} />
           </div>
