@@ -54,7 +54,7 @@ const Login = ({ login, error, setShowLogin }) => {
         submit
       </Button>
       <div className='flex flex-col items-center text-green-600 self-center mt-2'>
-        <Typography className='flex gap-0.5'>
+        {/* <Typography className='flex gap-0.5'>
           Forgot password?
           <Link
             component={'button'}
@@ -62,7 +62,7 @@ const Login = ({ login, error, setShowLogin }) => {
           >
             Click here
           </Link>
-        </Typography>
+        </Typography> */}
         <Typography className='flex gap-0.5'>New user? <Link component={'button'} onClick={() => setShowLogin(false)}>Signup</Link></Typography>
       </div>
     </CustomPaper>
