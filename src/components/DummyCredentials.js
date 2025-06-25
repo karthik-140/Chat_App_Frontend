@@ -1,17 +1,35 @@
 import { Box, Card, Typography } from "@mui/material";
-import React from "react";
+
+const dummyCreds = [
+  {
+    email: "demo@gmail.com",
+    password: "1234",
+  },
+  {
+    email: "karthik@gmail.com",
+    password: "1234",
+  },
+];
 
 const DummyCredentials = () => {
   return (
-    <Box>
+    <Box className="relative z-30">
       <Card className="p-4 space-y-4">
-        <Typography color="peru" className="font-bold text-center text-2xl underline">
-          Dummy Credentials
-        </Typography>
-        <Box className="grid grid-cols-2">
-          <Box className="text-lg"> Email</Box> <Typography>: demo@gmail.com</Typography>
-          <Box className="text-lg"> Password</Box> <Typography>: 1234</Typography>
-        </Box>
+        {dummyCreds.map((item, idx) => (
+          <div key={`dummy-creds-${idx}`}>
+            <Typography variant="body2" color={"peru"} fontWeight={700}>
+              Credentials-{idx + 1}:
+            </Typography>
+            <hr />
+            <Box className="grid grid-cols-2 mt-2">
+              <Box className="text-md"> Email</Box>{" "}
+              <Typography>: {item.email}</Typography>
+              <Box className="text-md"> Password</Box>{" "}
+              <Typography>: {item.password}</Typography>
+            </Box>
+          </div>
+        ))}
+        {/* <hr/> */}
       </Card>
     </Box>
   );
