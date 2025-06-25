@@ -31,11 +31,11 @@ const ChatsListMenu = ({ allGroups, setSelectedGroup }) => {
           Chats
         </Typography>
         <div className="flex gap-4 relative">
-          {allGroups.length === 0 && (
+          {/* {allGroups.length === 0 && (
             <p className="absolute z-50 top-0 text-orange-800 text-lg animate-bounce">
               Create group to chat.
             </p>
-          )}
+          )} */}
           <Tooltip title={`${showUserList ? "" : "Create Group"}`}>
             <PeopleIcon
               className="cursor-pointer"
