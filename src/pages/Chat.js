@@ -80,12 +80,12 @@ const Chat = () => {
   const groupId = selectedGroup?.id;
 
   useEffect(() => {
-    socket.emit("join-group", groupId);
-
+    
     const handleMessage = (userGroupInfo) => {
       setMessages((prev) => [...prev, { ...userGroupInfo }]);
     };
-
+    
+    socket.emit("join-group", groupId);
     socket.on("receive-message", handleMessage);
 
     return () => {

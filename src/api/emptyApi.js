@@ -1,24 +1,29 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+// import { url } from "../config/AppConfig";
+const url =
+  process.env.REACT_APP_MODE === "development"
+    ? process.env.REACT_APP_BACKEND_DOMAIN_DEV_URL
+    : process.env.REACT_APP_BACKEND_DOMAIN_PROD_URL;
 
-const getToken = () => localStorage.getItem('token')
+const getToken = () => localStorage.getItem("token");
 
 export const rootApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://chat-app-backend-nu-five.vercel.app/',
+    baseUrl: url,
     prepareHeaders: (headers, { endpoint }) => {
-      const excludedEndpoints = ['signup', 'login']
+      const excludedEndpoints = ["signup", "login"];
       if (!excludedEndpoints.includes(endpoint)) {
-        const token = getToken()
+        const token = getToken();
         if (token) {
-          headers.set('Authorization', token)
+          headers.set("Authorization", token);
         }
       }
-      return headers
-    }
+      return headers;
+    },
   }),
   tagTypes: [
     // 'message',
-    'group'
+    "group",
   ],
   endpoints: () => ({}),
-})
+});
