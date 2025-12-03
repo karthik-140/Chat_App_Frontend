@@ -1,29 +1,40 @@
 import { TextField } from "@mui/material";
-import { styled } from "@mui/material/styles"
+import { styled } from "@mui/material/styles";
 import CustomLabel from "./CustomLabel";
 import { Controller } from "react-hook-form";
 
 const StyledTextField = styled(TextField)(({ theme, error }) => ({
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
       borderRadius: 5,
     },
-    '&:hover fieldset': {
+    "&:hover fieldset": {
       borderColor: error
         ? theme.palette.error.light
         : theme.palette.success.light,
     },
-    '&.Mui-focused fieldset': {
+    "&.Mui-focused fieldset": {
       borderColor: error
         ? theme.palette.error.main
         : theme.palette.success.main,
     },
   },
-}))
-
+}));
 
 const CustomTextField = ({
-  name, label, className, sx, defaultValue, isRequired, varaint, type, placeholder, control, style, InputProps
+  name,
+  label,
+  className,
+  sx,
+  defaultValue,
+  isRequired,
+  varaint,
+  type,
+  placeholder,
+  control,
+  style,
+  InputProps,
+  ...restProps
 }) => {
   return (
     <div className="flex flex-col">
@@ -34,11 +45,8 @@ const CustomTextField = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue || ''}
-        render={({
-          field,
-          fieldState: { error }
-        }) => (
+        defaultValue={defaultValue || ""}
+        render={({ field, fieldState: { error } }) => (
           <StyledTextField
             {...field}
             className={className}
@@ -50,11 +58,12 @@ const CustomTextField = ({
             error={!!error}
             helperText={error ? error.message : null}
             InputProps={InputProps}
+            {...restProps}
           />
         )}
       />
     </div>
-  )
-}
+  );
+};
 
-export default CustomTextField
+export default CustomTextField;

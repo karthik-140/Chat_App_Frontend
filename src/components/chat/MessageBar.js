@@ -21,7 +21,7 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
   const [image, setImage] = useState(null);
 
   const [uploadImage, { isError }] = useUploadImageMutation();
-  const { control, handleSubmit, reset, watch } = useForm();
+  const { control, handleSubmit, reset, watch, getValues } = useForm();
   const message = watch("message");
 
   useEffect(() => {
@@ -76,6 +76,12 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.code === "Enter") {
+      onSubmit(getValues());
+    }
+  };
+
   return (
     <div className="flex gap-1 sticky bottom-0 w-full">
       <div className="flex-1">
@@ -86,6 +92,7 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
           className="w-full bg-white"
           style={{ borderRadius: 35 }}
           sx={{ "& fieldset": { border: "none" } }}
+          onKeyPress={handleKeyPress}
           InputProps={{
             startAdornment: (
               <>
@@ -108,7 +115,6 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
           }}
         />
       </div>
-      {/* {(!!message || !!uploadedFile) && ( */}
       <Button
         style={{
           borderRadius: 35,
@@ -116,14 +122,13 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
           fontSize: "18px",
           // color: "green",
         }}
-        className={`${message ? "text-green-700 hover:text-green-600" : ""}`}
+        className={`${message ? "text-green-600 hover:text-green-700" : ""}`}
         variant="contained"
         onClick={uploadedFile ? onUploadFile : handleSubmit(onSubmit)}
         disabled={!message}
       >
         <SendIcon />
       </Button>
-      {/* )} */}
       {image && (
         <div className="absolute w-80 bottom-14 object-fit">
           <div className="flex">
@@ -150,15 +155,12 @@ const MessageBar = ({ sendMessage, groupId, setMessages }) => {
           </Card>
         </div>
       )}
-      {
-        isError && (
-          <Toast
-            message={"This feature is not available for now!!"}
-            severity={"error"}
-          />
-        )
-        // <p className='absolute bottom-full animate-bounce'>This feature is not available for now!!</p>
-      }
+      {isError && (
+        <Toast
+          message={"This feature is not available for now!!"}
+          severity={"error"}
+        />
+      )}
     </div>
   );
 };

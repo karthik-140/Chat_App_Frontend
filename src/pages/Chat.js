@@ -80,11 +80,10 @@ const Chat = () => {
   const groupId = selectedGroup?.id;
 
   useEffect(() => {
-    
     const handleMessage = (userGroupInfo) => {
       setMessages((prev) => [...prev, { ...userGroupInfo }]);
     };
-    
+
     socket.emit("join-group", groupId);
     socket.on("receive-message", handleMessage);
 
@@ -123,7 +122,7 @@ const Chat = () => {
         >
           <MessageTopBar
             setSmallScreen={setSmallScreen}
-            selectedGroup={selectedGroup || allGroups[0]}
+            selectedGroup={selectedGroup || (!smallScreen && allGroups[0])}
             setSelectedGroup={setSelectedGroup}
           />
           <div className="mt-16 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-slate-100">
