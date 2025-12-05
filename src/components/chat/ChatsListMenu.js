@@ -26,7 +26,7 @@ const ChatsListMenu = ({ allGroups, setSelectedGroup }) => {
 
   return (
     <Paper className="flex flex-col w-full h-full">
-      <div className="flex justify-between items-center px-4 py-4 border-b bg-green-500 text-white">
+      <div className="flex justify-between items-center px-4 py-4 border-b bg-gradient-to-br from-green-500 to-green-700 text-white">
         <Typography className="font-bold" variant="h6">
           Chats
         </Typography>

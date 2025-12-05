@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import MessageBar from "../components/chat/MessageBar";
 import Messages from "../components/chat/Messages";
@@ -9,13 +9,12 @@ import {
 } from "../api/messageApi";
 import ChatsListMenu from "../components/chat/ChatsListMenu";
 import { useGetAllGroupsQuery } from "../api/groupApi";
-// import { socket } from '../components/chat/MessageBar'
 import { socket } from "../services/Socket";
+import EmptyChat from "../components/chat/EmptyChat";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
-  const [smallScreen, setSmallScreen] = useState(true);
 
   const { data: allGroups = [] } = useGetAllGroupsQuery();
   const [sendMessage] = useSendMessageMutation();
@@ -23,17 +22,9 @@ const Chat = () => {
 
   const { innerWidth } = window;
 
-  useEffect(() => {
-    if (innerWidth < 768) {
-      setSmallScreen((prev) => !prev);
-    }
-  }, [innerWidth, selectedGroup]);
-
-  useEffect(() => {
-    if (!selectedGroup && innerWidth > 767) {
-      setSelectedGroup(() => allGroups[0]);
-    }
-  }, [allGroups, innerWidth, selectedGroup]);
+  const isSmallScreen = useMemo(() => {
+    return innerWidth < 768;
+  }, [innerWidth]);
 
   const getStoredMessages = useCallback(() => {
     const messages = JSON.parse(localStorage.getItem(selectedGroup?.id)) || [];
@@ -95,34 +86,23 @@ const Chat = () => {
   return (
     <div className="flex h-screen">
       <div
-        // className={`${smallScreen ? 'w-full' : 'hidden'} md:w-1/4 h-full`}
-        className={`${
-          innerWidth > 767
-            ? "md:w-1/4 h-full"
-            : smallScreen
-            ? "w-full"
-            : "hidden"
-        } md:w-1/4 h-full`}
+        className={`md:w-1/4 h-full ${
+          isSmallScreen ? (selectedGroup ? "hidden" : "w-full") : ""
+        }`}
       >
         <ChatsListMenu
           allGroups={allGroups}
           setSelectedGroup={setSelectedGroup}
         />
       </div>
-      {allGroups.length > 0 && (
+      {!!selectedGroup ? (
         <div
-          // className={`${smallScreen ? 'hidden' : 'flex'} flex-1 md:flex flex-col h-full relative`}
-          className={`${
-            innerWidth > 767
-              ? "flex-1 flex flex-col h-full relative"
-              : smallScreen
-              ? "hidden"
-              : "flex"
-          } flex-1 md:flex flex-col h-full relative`}
+          className={`flex-1 md:flex flex flex-col h-full relative ${
+            isSmallScreen && !selectedGroup ? "hidden" : ""
+          }`}
         >
           <MessageTopBar
-            setSmallScreen={setSmallScreen}
-            selectedGroup={selectedGroup || (!smallScreen && allGroups[0])}
+            selectedGroup={selectedGroup}
             setSelectedGroup={setSelectedGroup}
           />
           <div className="mt-16 flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-slate-100">
@@ -134,6 +114,12 @@ const Chat = () => {
             setMessages={setMessages}
           />
         </div>
+      ) : (
+        !isSmallScreen && (
+          <div className="flex-1 relative">
+            <EmptyChat />
+          </div>
+        )
       )}
     </div>
   );
